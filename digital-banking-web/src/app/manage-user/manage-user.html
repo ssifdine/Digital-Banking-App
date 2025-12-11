@@ -1,0 +1,102 @@
+<div class="container mt-5">
+  <div class="card border-0 shadow-lg">
+    <div class="card-header bg-gradient text-black py-4 border-0 d-flex justify-content-between align-items-center">
+      <div>
+        <h3 class="mb-1 fw-bold">
+          <i class="bi bi-people-fill me-2"></i>User Management
+        </h3>
+        <p class="mb-0 opacity-90">View and manage all system users</p>
+      </div>
+      <div class="badge bg-white text-primary fs-6 px-3 py-2">
+        {{ users.length || 0 }} Users
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-header">
+          <tr>
+            <th class="ps-4"><i class="bi bi-person-circle me-2"></i>Username</th>
+            <th><i class="bi bi-envelope-fill me-2"></i>Email</th>
+            <th><i class="bi bi-shield-check me-2"></i>Roles</th>
+            <th class="text-center pe-4"><i class="bi bi-gear-fill me-2"></i>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of users" class="user-row">
+            <td class="ps-4">
+              <div class="d-flex align-items-center">
+                <div class="user-avatar me-3">{{ user.username.charAt(0).toUpperCase() }}</div>
+                <span class="fw-semibold">{{ user.username }}</span>
+              </div>
+            </td>
+
+            <td>
+              <input *ngIf="editMode[user.id]" [(ngModel)]="user.email" class="form-control form-control-sm"/>
+              <span *ngIf="!editMode[user.id]" class="text-muted">{{ user.email }}</span>
+            </td>
+
+            <td>
+              <div *ngIf="editMode[user.id]" class="d-flex gap-3">
+                <div *ngFor="let role of ['USER', 'ADMIN']" class="form-check">
+                  <input class="form-check-input" type="checkbox" [checked]="user.roles.includes(role)" (change)="toggleRole(user, role)"/>
+                  <label class="form-check-label small">{{ role }}</label>
+                </div>
+              </div>
+              <div *ngIf="!editMode[user.id]" class="d-flex gap-1">
+                <span *ngFor="let role of user.roles" class="badge-role">{{ role }}</span>
+              </div>
+            </td>
+
+            <td class="pe-4">
+              <div class="d-flex justify-content-center gap-2">
+                <button *ngIf="!editMode[user.id]" class="btn-action btn-action-edit" (click)="enableEdit(user.id)" title="Edit user">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+                <button *ngIf="editMode[user.id]" class="btn-action btn-action-save" (click)="saveUser(user)" title="Save changes">
+                  <i class="bi bi-check-lg"></i>
+                </button>
+                <button class="btn-action btn-action-password" *ngIf="true" (click)="openResetPasswordModal(user)" title="Reset password">
+                  <i class="bi bi-key-fill"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reset Password Modal -->
+  <div class="modal fade show" tabindex="-1" [style.display]="selectedUser ? 'block' : 'none'" style="background-color: rgba(0, 0, 0, 0.6)" *ngIf="selectedUser">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-custom border-0 shadow-lg">
+        <div class="modal-header modal-header-primary border-0">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-key-fill me-2"></i>Reset Password
+          </h5>
+          <button type="button" class="btn-close btn-close-white" (click)="selectedUser = null"></button>
+        </div>
+        <div class="modal-body py-4">
+          <div class="mb-3 text-center">
+            <i class="bi bi-person-circle text-primary" style="font-size: 3rem;"></i>
+          </div>
+          <p class="text-center mb-4">
+            Reset password for <strong class="text-primary">{{ selectedUser.username }}</strong>
+          </p>
+          <div class="mb-3">
+            <label class="form-label fw-semibold text-secondary"><i class="bi bi-lock-fill me-2"></i>New Password</label>
+            <input [(ngModel)]="resetPasswordValue" type="password" class="form-control form-control-lg" placeholder="Enter new password"/>
+            <small class="form-text text-muted">Minimum 8 characters recommended</small>
+          </div>
+        </div>
+        <div class="modal-footer border-0 justify-content-center pb-4">
+          <button class="btn btn-light px-4" (click)="selectedUser = null">Cancel</button>
+          <button class="btn btn-success px-4" (click)="submitPasswordReset()"><i class="bi bi-check-circle-fill me-2"></i>Reset Password</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

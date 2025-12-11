@@ -1,0 +1,15 @@
+.navbar-brand {
+  font-size: 1.2rem;
+}
+
+.navbar-nav .nav-link {
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link.active {
+  text-decoration: underline;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}

@@ -1,0 +1,74 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+    <div class="text-center mb-4">
+      <img [src]="'assets/logoDB.png'" alt="Digital Bank Logo" width="200" height="200" class="mb-2">
+      <h4 class="text-primary">Welcome to DigitalBank</h4>
+      <p class="text-muted small">Secure Login to your account</p>
+    </div>
+
+    <form [formGroup]="formLogin" (ngSubmit)="handleLogin()">
+      <!-- Username -->
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-control"
+               [class.is-invalid]="(formLogin.get('username')?.invalid && (formLogin.get('username')?.touched || formLogin.get('username')?.errors?.['unauthorized']))"
+               formControlName="username"
+               placeholder="Enter your username">
+        <div *ngIf="formLogin.get('username')?.touched && formLogin.get('username')?.errors" class="text-danger small">
+          <div *ngIf="formLogin.get('username')?.errors?.['required']">Username is required.</div>
+          <div *ngIf="formLogin.get('username')?.errors?.['minlength']">Username must be at least 4 characters.</div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control"
+               [class.is-invalid]="(formLogin.get('password')?.invalid && formLogin.get('password')?.touched) || formLogin.get('password')?.errors?.['unauthorized']"
+               formControlName="password"
+               placeholder="Enter your password">
+        <div *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.errors" class="text-danger small">
+          <div *ngIf="formLogin.get('password')?.errors?.['required']">Password is required.</div>
+          <div *ngIf="formLogin.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</div>
+        </div>
+      </div>
+
+      <!-- Remember Me -->
+<!--      <div class="d-flex justify-content-between align-items-center mb-3">-->
+<!--        <div class="form-check">-->
+<!--          <input class="form-check-input" type="checkbox" id="rememberMe">-->
+<!--          <label class="form-check-label" for="rememberMe">Remember me</label>-->
+<!--        </div>-->
+<!--        <a href="/forgot-password" class="small text-decoration-none">Forgot password?</a>-->
+<!--      </div>-->
+
+      <!-- Submit -->
+      <button type="submit" class="btn btn-primary w-100" [disabled]="formLogin.invalid">Login</button>
+      <div *ngIf="formLogin.get('password')?.errors?.['unauthorized']" class="text-danger small">Login failed. Please check your credentials.</div>
+
+      <!-- Register -->
+<!--      <div class="text-center mt-3">-->
+<!--        <span class="text-muted small">Don’t have an account?</span>-->
+<!--        <a href="/register" class="small text-decoration-none">Create one</a>-->
+<!--      </div>-->
+    </form>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div
+      *ngIf="loginError"
+      class="toast show align-items-center text-bg-danger border-0"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="d-flex">
+        <div class="toast-body">
+          {{ loginError }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close" (click)="loginError = null"></button>
+      </div>
+    </div>
+  </div>
+</div>

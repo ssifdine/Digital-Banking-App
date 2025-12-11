@@ -1,0 +1,505 @@
+<div class="dashboard-wrapper">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="container-fluid">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="dashboard-title mb-1">
+            <i class="bi bi-speedometer2 me-3"></i>Dashboard
+          </h1>
+          <p class="dashboard-subtitle mb-0">Overview of your banking operations</p>
+        </div>
+<!--        <div class="header-actions">-->
+<!--          <button class="btn btn-light btn-sm me-2">-->
+<!--            <i class="bi bi-calendar3 me-2"></i>Last 30 days-->
+<!--          </button>-->
+<!--          <button class="btn btn-primary btn-sm">-->
+<!--            <i class="bi bi-download me-2"></i>Export-->
+<!--          </button>-->
+<!--        </div>-->
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="!allChartsReady" class="loading-container">
+    <div class="bank-spinner">
+      <div class="spinner-wrapper">
+        <div class="coin-spinner"></div>
+        <div class="coin-spinner coin-2"></div>
+        <div class="coin-spinner coin-3"></div>
+      </div>
+      <p class="loading-text">
+        <i class="bi bi-bank2 me-2"></i>Loading dashboard data...
+      </p>
+      <div class="loading-bar">
+        <div class="loading-progress"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="allChartsReady" class="dashboard-content">
+    <!-- Statistics Cards -->
+    <div class="stats-cards-container">
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3" *ngFor="let stat of statCards; let i = index">
+          <div class="stat-card" [style.animation-delay]="i * 0.1 + 's'">
+            <div class="stat-icon" [ngClass]="'stat-icon-' + (i + 1)">
+              <i [class]="getStatIcon(i)"></i>
+            </div>
+            <div class="stat-content">
+              <h6 class="stat-label">{{ stat.label }}</h6>
+              <h3 class="stat-value">{{ stat.value }}</h3>
+              <div class="stat-trend">
+                <i class="bi bi-arrow-up-short text-success"></i>
+                <span class="text-success">12.5%</span>
+                <span class="text-muted ms-1">vs last month</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <div class="row g-4">
+        <!-- Pie Chart -->
+        <div class="col-lg-4">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-pie-chart-fill me-2 text-primary"></i>
+                {{ pieChartOptions.title?.text || 'Distribution' }}
+              </h5>
+              <button class="btn btn-sm btn-light">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+            </div>
+            <div class="card-body">
+              <apx-chart
+                [series]="pieChartOptions.series"
+                [chart]="pieChartOptions.chart"
+                [labels]="pieChartOptions.labels"
+                [legend]="pieChartOptions.legend"
+                [colors]="pieChartOptions.colors"
+              ></apx-chart>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bar Chart - Operations -->
+        <div class="col-lg-4">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-bar-chart-fill me-2 text-success"></i>
+                {{ barChartOperationsOptions.title?.text || 'Operations' }}
+              </h5>
+              <button class="btn btn-sm btn-light">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+            </div>
+            <div class="card-body">
+              <apx-chart
+                [series]="barChartOperationsOptions.series"
+                [chart]="barChartOperationsOptions.chart"
+                [xaxis]="barChartOperationsOptions.xaxis"
+                [colors]="barChartOperationsOptions.colors"
+              ></apx-chart>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bar Chart - Customers -->
+        <div class="col-lg-4">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-people-fill me-2 text-warning"></i>
+                {{ barChartCustomersOptions.title?.text || 'Customers' }}
+              </h5>
+              <button class="btn btn-sm btn-light">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+            </div>
+            <div class="card-body">
+              <apx-chart
+                [series]="barChartCustomersOptions.series"
+                [chart]="barChartCustomersOptions.chart"
+                [xaxis]="barChartCustomersOptions.xaxis"
+                [colors]="barChartCustomersOptions.colors"
+              ></apx-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+<!--    <div class="activity-section mt-4">-->
+<!--      <div class="card">-->
+<!--        <div class="card-header">-->
+<!--          <h5 class="card-title mb-0">-->
+<!--            <i class="bi bi-clock-history me-2"></i>Recent Activity-->
+<!--          </h5>-->
+<!--        </div>-->
+<!--        <div class="card-body p-0">-->
+<!--          <div class="table-responsive">-->
+<!--            <table class="table table-hover mb-0">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th>Time</th>-->
+<!--                <th>Action</th>-->
+<!--                <th>User</th>-->
+<!--                <th>Status</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr>-->
+<!--                <td><small class="text-muted">2 min ago</small></td>-->
+<!--                <td><i class="bi bi-arrow-up-circle text-success me-2"></i>Deposit</td>-->
+<!--                <td>John Doe</td>-->
+<!--                <td><span class="badge bg-success">Completed</span></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td><small class="text-muted">15 min ago</small></td>-->
+<!--                <td><i class="bi bi-arrow-down-circle text-danger me-2"></i>Withdrawal</td>-->
+<!--                <td>Jane Smith</td>-->
+<!--                <td><span class="badge bg-success">Completed</span></td>-->
+<!--              </tr>-->
+<!--              <tr>-->
+<!--                <td><small class="text-muted">1 hour ago</small></td>-->
+<!--                <td><i class="bi bi-arrow-left-right text-primary me-2"></i>Transfer</td>-->
+<!--                <td>Mike Johnson</td>-->
+<!--                <td><span class="badge bg-warning">Pending</span></td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+  </div>
+</div>
+
+<style>
+  .dashboard-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 2rem 0;
+  }
+
+  /* Dashboard Header */
+  .dashboard-header {
+    background: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+  }
+
+  .dashboard-title i {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .dashboard-subtitle {
+    color: #718096;
+    font-size: 1rem;
+  }
+
+  .header-actions .btn {
+    border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  /* Loading State */
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+  }
+
+  .bank-spinner {
+    text-align: center;
+  }
+
+  .spinner-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 2rem;
+  }
+
+  .coin-spinner {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .coin-2 {
+    animation-delay: 0.3s;
+    opacity: 0.6;
+  }
+
+  .coin-3 {
+    animation-delay: 0.6s;
+    opacity: 0.3;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: translate(-50%, -50%) scale(0.8);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.2);
+      opacity: 1;
+    }
+  }
+
+  .loading-text {
+    font-size: 1.2rem;
+    color: #4a5568;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .loading-bar {
+    width: 200px;
+    height: 4px;
+    background: #e2e8f0;
+    border-radius: 2px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .loading-progress {
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+    animation: loading 1.5s ease-in-out infinite;
+  }
+
+  @keyframes loading {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+  }
+
+  /* Dashboard Content */
+  .dashboard-content {
+    padding: 0 1rem;
+  }
+
+  /* Stats Cards */
+  .stats-cards-container {
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .stat-icon-1 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .stat-icon-2 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  }
+
+  .stat-icon-3 {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+
+  .stat-icon-4 {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  }
+
+  .stat-content {
+    flex: 1;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-trend {
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Charts Section */
+  .charts-section {
+    margin-bottom: 2rem;
+  }
+
+  .chart-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .chart-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .chart-card .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #e2e8f0;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+  }
+
+  .chart-card .card-body {
+    padding: 1.5rem;
+  }
+
+  /* Activity Section */
+  .activity-section .card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  }
+
+  .activity-section .card-header {
+    background: white;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .activity-section .table {
+    margin-bottom: 0;
+  }
+
+  .activity-section .table thead th {
+    border-bottom: 2px solid #e2e8f0;
+    color: #718096;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    padding: 1rem 1.5rem;
+  }
+
+  .activity-section .table tbody td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .activity-section .table tbody tr:hover {
+    background-color: #f8f9ff;
+  }
+
+  .badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .dashboard-title {
+      font-size: 1.5rem;
+    }
+
+    .header-actions {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+    }
+  }
+</style>
