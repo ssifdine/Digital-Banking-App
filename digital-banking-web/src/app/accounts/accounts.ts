@@ -10,7 +10,7 @@ import {
   JsonPipe,
   NgClass,
   NgFor,
-  NgIf,
+  NgIf, NgStyle,
   SlicePipe,
   TitleCasePipe, UpperCasePipe
 } from '@angular/common';
@@ -24,7 +24,7 @@ import {BeneficaireDTO} from '../model/account.model';
     ReactiveFormsModule,
     NgIf, NgFor,
     AsyncPipe,
-    DecimalPipe, DatePipe, NgClass, FormsModule, TitleCasePipe,
+    DecimalPipe, DatePipe, NgClass, FormsModule, TitleCasePipe, NgStyle,
   ],
   templateUrl: './accounts.html',
   styleUrl: './accounts.css'

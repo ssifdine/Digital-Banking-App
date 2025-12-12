@@ -1,30 +1,233 @@
-<div class="container">
-  <div class="card col-md-6 offset-3 mt-2">
-    <div class="card-header">New Customer</div>
-    <div class="card-body">
-      <form [formGroup]="newCustomerFormGroup" (ngSubmit)="handleSaveCustomer()">
-        <div class="mb-3">
-          <label class="form-label">Name :</label>
-          <input type="text" formControlName="name" class="form-control">
-          <span class="text-danger"
-                *ngIf="newCustomerFormGroup.get('name')?.touched
-                && newCustomerFormGroup.get('name')?.errors
-                && newCustomerFormGroup.get('name')?.errors?.['required']">
-            Name is required
-          </span>
+<div class="min-vh-100 d-flex align-items-center justify-content-center py-5"
+     style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+        <!-- Breadcrumb / Back Navigation -->
+        <div class="mb-4">
+          <button class="btn btn-link text-decoration-none p-0" onclick="history.back()">
+            <i class="bi bi-arrow-left-circle me-2"></i>
+            <span class="text-muted">Retour à la liste des clients</span>
+          </button>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Email :</label>
-          <input type="text" formControlName="email" class="form-control">
-          <span class="text-danger"
-                *ngIf="newCustomerFormGroup.get('email')?.touched
-                && newCustomerFormGroup.get('email')?.errors
-                && newCustomerFormGroup.get('email')?.errors?.['required']">
-            Email is not valid
-          </span>
+
+        <!-- Main Card -->
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+          <!-- Header with Gradient -->
+          <div class="card-header border-0 py-4 text-white"
+               style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center justify-content-center rounded-circle bg-white me-3"
+                   style="width: 50px; height: 50px;">
+                <i class="bi bi-person-plus-fill fs-4" style="color: #667eea;"></i>
+              </div>
+              <div>
+                <h4 class="mb-1 fw-bold">Nouveau Client</h4>
+                <small class="opacity-75">Ajoutez un nouveau client à votre portefeuille</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Body -->
+          <div class="card-body p-5">
+            <form [formGroup]="newCustomerFormGroup" (ngSubmit)="handleSaveCustomer()">
+
+              <!-- Name Field -->
+              <div class="mb-4">
+                <label class="form-label fw-semibold mb-3" style="color: #2d3748;">
+                  <i class="bi bi-person me-2 text-primary"></i>
+                  Nom Complet *
+                </label>
+                <div class="position-relative">
+                  <input
+                    type="text"
+                    formControlName="name"
+                    class="form-control form-control-lg border-2 ps-4"
+                    [class.is-invalid]="newCustomerFormGroup.get('name')?.touched && newCustomerFormGroup.get('name')?.errors"
+                    placeholder="Ex: Mohammed Alami"
+                    style="border-radius: 12px;">
+                  <i class="bi bi-person-circle position-absolute text-muted"
+                     style="top: 50%; right: 15px; transform: translateY(-50%);"></i>
+                </div>
+                <div *ngIf="newCustomerFormGroup.get('name')?.touched && newCustomerFormGroup.get('name')?.errors"
+                     class="mt-2">
+                  <small class="text-danger d-flex align-items-center">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    <span *ngIf="newCustomerFormGroup.get('name')?.errors?.['required']">
+                      Le nom complet est obligatoire
+                    </span>
+                  </small>
+                </div>
+                <small class="text-muted mt-2 d-block">
+                  <i class="bi bi-info-circle me-1"></i>
+                  Entrez le nom complet du client
+                </small>
+              </div>
+
+              <!-- Email Field -->
+              <div class="mb-4">
+                <label class="form-label fw-semibold mb-3" style="color: #2d3748;">
+                  <i class="bi bi-envelope me-2 text-primary"></i>
+                  Adresse Email *
+                </label>
+                <div class="position-relative">
+                  <input
+                    type="email"
+                    formControlName="email"
+                    class="form-control form-control-lg border-2 ps-4"
+                    [class.is-invalid]="newCustomerFormGroup.get('email')?.touched && newCustomerFormGroup.get('email')?.errors"
+                    placeholder="Ex: client@exemple.com"
+                    style="border-radius: 12px;">
+                  <i class="bi bi-envelope-fill position-absolute text-muted"
+                     style="top: 50%; right: 15px; transform: translateY(-50%);"></i>
+                </div>
+                <div *ngIf="newCustomerFormGroup.get('email')?.touched && newCustomerFormGroup.get('email')?.errors"
+                     class="mt-2">
+                  <small class="text-danger d-flex align-items-center">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    <span *ngIf="newCustomerFormGroup.get('email')?.errors?.['required']">
+                      L'adresse email est obligatoire
+                    </span>
+                    <span *ngIf="newCustomerFormGroup.get('email')?.errors?.['email']">
+                      L'adresse email n'est pas valide
+                    </span>
+                  </small>
+                </div>
+                <small class="text-muted mt-2 d-block">
+                  <i class="bi bi-shield-check me-1"></i>
+                  Cette adresse sera utilisée pour les communications
+                </small>
+              </div>
+
+              <!-- Divider -->
+              <hr class="my-4">
+
+              <!-- Form Info Box -->
+              <div class="alert border-0 d-flex align-items-start mb-4"
+                   style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%); border-radius: 12px;">
+                <i class="bi bi-lightbulb-fill text-primary fs-4 me-3 mt-1"></i>
+                <div>
+                  <h6 class="fw-bold mb-1" style="color: #2d3748;">Conseil</h6>
+                  <small class="text-muted">
+                    Assurez-vous que les informations saisies sont correctes.
+                    Vous pourrez les modifier ultérieurement si nécessaire.
+                  </small>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex gap-3">
+                <button
+                  type="button"
+                  class="btn btn-lg btn-outline-secondary flex-fill fw-semibold"
+                  onclick="history.back()"
+                  style="border-radius: 12px; border-width: 2px;">
+                  <i class="bi bi-x-circle me-2"></i>
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  [disabled]="!newCustomerFormGroup.valid"
+                  class="btn btn-lg flex-fill text-white fw-bold shadow-lg"
+                  style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 12px; transition: all 0.3s ease;">
+                  <i class="bi bi-check-circle-fill me-2"></i>
+                  Enregistrer le Client
+                </button>
+              </div>
+
+              <!-- Required Fields Notice -->
+              <div class="text-center mt-4">
+                <small class="text-muted">
+                  <i class="bi bi-asterisk text-danger" style="font-size: 0.6rem;"></i>
+                  Les champs marqués d'un astérisque sont obligatoires
+                </small>
+              </div>
+            </form>
+          </div>
         </div>
-        <button [disabled]="!newCustomerFormGroup.valid" class="btn btn-info">Save</button>
-      </form>
+
+        <!-- Additional Info Card -->
+        <div class="row mt-4 g-3">
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-3" style="border-radius: 12px;">
+              <i class="bi bi-shield-check text-success fs-1 mb-2"></i>
+              <h6 class="fw-bold mb-1" style="color: #2d3748;">Sécurisé</h6>
+              <small class="text-muted">Données protégées</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-3" style="border-radius: 12px;">
+              <i class="bi bi-lightning-charge text-warning fs-1 mb-2"></i>
+              <h6 class="fw-bold mb-1" style="color: #2d3748;">Rapide</h6>
+              <small class="text-muted">Création instantanée</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 text-center p-3" style="border-radius: 12px;">
+              <i class="bi bi-pencil-square text-info fs-1 mb-2"></i>
+              <h6 class="fw-bold mb-1" style="color: #2d3748;">Modifiable</h6>
+              <small class="text-muted">Édition facile</small>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  /* Input focus effects */
+  .form-control:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+  }
+
+  /* Button hover effect */
+  button[type="submit"]:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+  }
+
+  button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    filter: grayscale(0.3);
+  }
+
+  /* Button outline hover */
+  .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* Card hover for info cards */
+  .col-md-4 .card:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+  }
+
+  /* Invalid input animation */
+  .form-control.is-invalid {
+    animation: shake 0.5s;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* Smooth transitions */
+  * {
+    transition: all 0.3s ease;
+  }
+
+  /* Back button hover */
+  .btn-link:hover {
+    transform: translateX(-5px);
+  }
+</style>

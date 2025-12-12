@@ -1,63 +1,94 @@
-<div class="container mt-5">
-  <div class="card border-0 shadow-lg">
-    <div class="card-header bg-gradient text-black py-4 border-0 d-flex justify-content-between align-items-center">
+<div class="container-fluid px-4 py-4">
+  <!-- Header Section -->
+  <div class="page-header mb-4">
+    <div class="d-flex justify-content-between align-items-center">
       <div>
-        <h3 class="mb-1 fw-bold">
+        <h1 class="page-title mb-2">
           <i class="bi bi-people-fill me-2"></i>User Management
-        </h3>
-        <p class="mb-0 opacity-90">View and manage all system users</p>
+        </h1>
+        <p class="page-subtitle text-muted mb-0">View and manage all system users</p>
       </div>
-      <div class="badge bg-white text-primary fs-6 px-3 py-2">
-        {{ users.length || 0 }} Users
+      <div class="stats-badge">
+        <i class="bi bi-person-fill-check me-2"></i>
+        <span class="fw-semibold">{{ users.length || 0 }}</span>
+        <span class="text-muted ms-1">Users</span>
       </div>
     </div>
+  </div>
 
+  <!-- Main Card -->
+  <div class="card card-modern">
     <div class="card-body p-0">
+      <!-- Table -->
       <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-header">
+        <table class="table table-modern mb-0">
+          <thead>
           <tr>
-            <th class="ps-4"><i class="bi bi-person-circle me-2"></i>Username</th>
-            <th><i class="bi bi-envelope-fill me-2"></i>Email</th>
-            <th><i class="bi bi-shield-check me-2"></i>Roles</th>
-            <th class="text-center pe-4"><i class="bi bi-gear-fill me-2"></i>Actions</th>
+            <th class="ps-4">
+              <i class="bi bi-person-circle me-2"></i>Username
+            </th>
+            <th>
+              <i class="bi bi-envelope-fill me-2"></i>Email
+            </th>
+            <th>
+              <i class="bi bi-shield-check me-2"></i>Roles
+            </th>
+            <th class="text-center pe-4">
+              <i class="bi bi-gear-fill me-2"></i>Actions
+            </th>
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let user of users" class="user-row">
+          <tr *ngFor="let user of users" class="table-row-modern">
             <td class="ps-4">
-              <div class="d-flex align-items-center">
-                <div class="user-avatar me-3">{{ user.username.charAt(0).toUpperCase() }}</div>
-                <span class="fw-semibold">{{ user.username }}</span>
+              <div class="d-flex align-items-center gap-3">
+                <div class="avatar-circle">
+                  {{ user.username.charAt(0).toUpperCase() }}
+                </div>
+                <span class="fw-semibold text-dark">{{ user.username }}</span>
               </div>
             </td>
 
             <td>
-              <input *ngIf="editMode[user.id]" [(ngModel)]="user.email" class="form-control form-control-sm"/>
-              <span *ngIf="!editMode[user.id]" class="text-muted">{{ user.email }}</span>
+              <div *ngIf="editMode[user.id]">
+                <input [(ngModel)]="user.email" class="form-control form-control-modern"/>
+              </div>
+              <div *ngIf="!editMode[user.id]">
+                <span class="text-muted">{{ user.email }}</span>
+              </div>
             </td>
 
             <td>
               <div *ngIf="editMode[user.id]" class="d-flex gap-3">
                 <div *ngFor="let role of ['USER', 'ADMIN']" class="form-check">
                   <input class="form-check-input" type="checkbox" [checked]="user.roles.includes(role)" (change)="toggleRole(user, role)"/>
-                  <label class="form-check-label small">{{ role }}</label>
+                  <label class="form-check-label small fw-medium">{{ role }}</label>
                 </div>
               </div>
-              <div *ngIf="!editMode[user.id]" class="d-flex gap-1">
-                <span *ngFor="let role of user.roles" class="badge-role">{{ role }}</span>
+              <div *ngIf="!editMode[user.id]" class="d-flex gap-2 flex-wrap">
+                  <span *ngFor="let role of user.roles" [class]="'badge-modern badge-' + (role === 'ADMIN' ? 'admin' : 'user')">
+                    {{ role }}
+                  </span>
               </div>
             </td>
 
             <td class="pe-4">
               <div class="d-flex justify-content-center gap-2">
-                <button *ngIf="!editMode[user.id]" class="btn-action btn-action-edit" (click)="enableEdit(user.id)" title="Edit user">
+                <button *ngIf="!editMode[user.id]"
+                        class="btn-icon btn-icon-edit"
+                        (click)="enableEdit(user.id)"
+                        title="Edit user">
                   <i class="bi bi-pencil-fill"></i>
                 </button>
-                <button *ngIf="editMode[user.id]" class="btn-action btn-action-save" (click)="saveUser(user)" title="Save changes">
+                <button *ngIf="editMode[user.id]"
+                        class="btn-icon btn-icon-save"
+                        (click)="saveUser(user)"
+                        title="Save changes">
                   <i class="bi bi-check-lg"></i>
                 </button>
-                <button class="btn-action btn-action-password" *ngIf="true" (click)="openResetPasswordModal(user)" title="Reset password">
+                <button class="btn-icon btn-icon-password"
+                        (click)="openResetPasswordModal(user)"
+                        title="Reset password">
                   <i class="bi bi-key-fill"></i>
                 </button>
               </div>
@@ -70,33 +101,432 @@
   </div>
 
   <!-- Reset Password Modal -->
-  <div class="modal fade show" tabindex="-1" [style.display]="selectedUser ? 'block' : 'none'" style="background-color: rgba(0, 0, 0, 0.6)" *ngIf="selectedUser">
+  <div class="modal fade show"
+       tabindex="-1"
+       [style.display]="selectedUser ? 'block' : 'none'"
+       style="background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);"
+       *ngIf="selectedUser">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content modal-custom border-0 shadow-lg">
-        <div class="modal-header modal-header-primary border-0">
-          <h5 class="modal-title fw-bold">
-            <i class="bi bi-key-fill me-2"></i>Reset Password
-          </h5>
-          <button type="button" class="btn-close btn-close-white" (click)="selectedUser = null"></button>
-        </div>
-        <div class="modal-body py-4">
-          <div class="mb-3 text-center">
-            <i class="bi bi-person-circle text-primary" style="font-size: 3rem;"></i>
+      <div class="modal-content modal-modern">
+        <div class="modal-header border-0">
+          <div>
+            <h5 class="modal-title fw-bold mb-1">
+              <i class="bi bi-key-fill me-2 text-primary"></i>Reset Password
+            </h5>
+            <p class="text-muted small mb-0">Update password for this user</p>
           </div>
-          <p class="text-center mb-4">
-            Reset password for <strong class="text-primary">{{ selectedUser.username }}</strong>
-          </p>
+          <button type="button" class="btn-close" (click)="selectedUser = null"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="user-info-card mb-4">
+            <div class="d-flex align-items-center gap-3">
+              <div class="avatar-circle-large">
+                {{ selectedUser.username.charAt(0).toUpperCase() }}
+              </div>
+              <div>
+                <div class="fw-semibold text-dark">{{ selectedUser.username }}</div>
+                <div class="text-muted small">{{ selectedUser.email }}</div>
+              </div>
+            </div>
+          </div>
+
           <div class="mb-3">
-            <label class="form-label fw-semibold text-secondary"><i class="bi bi-lock-fill me-2"></i>New Password</label>
-            <input [(ngModel)]="resetPasswordValue" type="password" class="form-control form-control-lg" placeholder="Enter new password"/>
-            <small class="form-text text-muted">Minimum 8 characters recommended</small>
+            <label class="form-label fw-semibold">
+              <i class="bi bi-lock-fill me-2"></i>New Password
+            </label>
+            <input [(ngModel)]="resetPasswordValue"
+                   type="password"
+                   class="form-control form-control-lg"
+                   placeholder="Enter new password"/>
+            <small class="form-text text-muted mt-2 d-block">
+              <i class="bi bi-info-circle me-1"></i>
+              Minimum 8 characters recommended
+            </small>
           </div>
         </div>
-        <div class="modal-footer border-0 justify-content-center pb-4">
-          <button class="btn btn-light px-4" (click)="selectedUser = null">Cancel</button>
-          <button class="btn btn-success px-4" (click)="submitPasswordReset()"><i class="bi bi-check-circle-fill me-2"></i>Reset Password</button>
+
+        <div class="modal-footer border-0">
+          <button class="btn btn-light px-4" (click)="selectedUser = null">
+            Cancel
+          </button>
+          <button class="btn btn-success px-4" (click)="submitPasswordReset()">
+            <i class="bi bi-check-circle-fill me-2"></i>Reset Password
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<style>
+  /* Modern Color Palette */
+  :root {
+    --primary-color: #4F46E5;
+    --primary-hover: #4338CA;
+    --success-color: #10B981;
+    --warning-color: #F59E0B;
+    --danger-color: #EF4444;
+    --secondary-color: #6B7280;
+    --border-color: #E5E7EB;
+    --bg-light: #F9FAFB;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  body {
+    background: #F3F4F6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* Page Layout */
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+  }
+
+  .page-subtitle {
+    font-size: 0.875rem;
+    color: #6B7280;
+  }
+
+  .stats-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Modern Card */
+  .card-modern {
+    border: none;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    background: white;
+  }
+
+  /* Modern Table */
+  .table-modern {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .table-modern thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .table-modern thead th {
+    border: none;
+    padding: 1.25rem 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: white;
+    letter-spacing: 0.025em;
+  }
+
+  .table-row-modern td {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+  }
+
+  .table-row-modern:hover {
+    background: #FAFBFC;
+    transition: all 0.2s ease;
+  }
+
+  .table-row-modern:last-child td {
+    border-bottom: none;
+  }
+
+  /* Avatar */
+  .avatar-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  }
+
+  .avatar-circle-large {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  /* Modern Badges */
+  .badge-modern {
+    padding: 0.375rem 0.875rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-admin {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FCD34D 100%);
+    color: #92400E;
+    box-shadow: 0 2px 4px rgba(252, 211, 77, 0.3);
+  }
+
+  .badge-user {
+    background: linear-gradient(135deg, #DBEAFE 0%, #93C5FD 100%);
+    color: #1E40AF;
+    box-shadow: 0 2px 4px rgba(147, 197, 253, 0.3);
+  }
+
+  /* Icon Buttons */
+  .btn-icon {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+
+  .btn-icon-edit {
+    background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+    color: var(--primary-color);
+  }
+
+  .btn-icon-edit:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  }
+
+  .btn-icon-save {
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+    color: var(--success-color);
+  }
+
+  .btn-icon-save:hover {
+    background: var(--success-color);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  }
+
+  .btn-icon-password {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    color: var(--warning-color);
+  }
+
+  .btn-icon-password:hover {
+    background: var(--warning-color);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+  }
+
+  /* Modal */
+  .modal-modern {
+    border: none;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .modal-modern .modal-header {
+    padding: 1.75rem;
+    background: linear-gradient(135deg, #F9FAFB 0%, #FFFFFF 100%);
+  }
+
+  .modal-modern .modal-body {
+    padding: 1.75rem;
+  }
+
+  .modal-modern .modal-footer {
+    padding: 1.75rem;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%);
+  }
+
+  .user-info-card {
+    background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
+    padding: 1.25rem;
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+  }
+
+  /* Form Controls */
+  .form-control-modern {
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 0.625rem 0.875rem;
+    transition: all 0.2s ease;
+  }
+
+  .form-control-modern:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+  }
+
+  .form-control-lg {
+    border-radius: 12px;
+    border: 2px solid var(--border-color);
+    padding: 0.875rem 1.125rem;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+  }
+
+  .form-control-lg:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    outline: none;
+  }
+
+  .form-check-input {
+    border-radius: 6px;
+    border: 2px solid var(--border-color);
+    width: 1.125rem;
+    height: 1.125rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+  }
+
+  .form-check-label {
+    cursor: pointer;
+    user-select: none;
+    color: #374151;
+  }
+
+  /* Buttons */
+  .btn-success {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+
+  .btn-success:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+  }
+
+  .btn-light {
+    background: #F3F4F6;
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    color: #374151;
+    transition: all 0.3s ease;
+  }
+
+  .btn-light:hover {
+    background: #E5E7EB;
+    color: #1F2937;
+    transform: translateY(-2px);
+  }
+
+  .btn-close {
+    transition: all 0.2s ease;
+  }
+
+  .btn-close:hover {
+    transform: rotate(90deg);
+  }
+
+  /* Form Text */
+  .form-text {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8125rem;
+    color: #6B7280;
+  }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .table-row-modern {
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  .modal-modern {
+    animation: fadeIn 0.4s ease forwards;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 1.5rem;
+    }
+
+    .stats-badge {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .table-modern thead th {
+      padding: 1rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .table-row-modern td {
+      padding: 1rem 0.75rem;
+    }
+
+    .btn-icon {
+      width: 34px;
+      height: 34px;
+    }
+  }
+</style>

@@ -1,372 +1,386 @@
-<div class="container mt-4">
-  <div class="row">
+<div class="container-fluid px-4 py-4" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh;">
+  <div class="row g-4">
     <!-- Left Column: Account Search & Details -->
-    <div class="col-md-6">
-      <div class="card shadow-sm mb-4">
-        <div class="card-header bg-primary text-white">
-          <i class="bi bi-wallet2 me-2"></i> Rechercher un Compte
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header border-0 py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          <h5 class="text-white mb-0 d-flex align-items-center">
+            <i class="bi bi-search me-3 fs-4"></i>
+            <span class="fw-bold">Recherche & Détails du Compte</span>
+          </h5>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
 
-          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-            <form
-              [formGroup]="accountFormGroup"
-              (ngSubmit)="handleSearchAccount()"
-              class="d-flex flex-grow-1 gap-2"
-            >
-              <input
-                type="text"
-                formControlName="accountId"
-                class="form-control form-control-sm"
-                placeholder="Search account ID..."
-              />
-              <button type="submit" class="btn btn-info btn-sm text-white">
-                <i class="bi bi-search"></i>
-              </button>
-            </form>
+          <!-- Search Bar with Active Account Badge -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-7">
+              <form [formGroup]="accountFormGroup" (ngSubmit)="handleSearchAccount()">
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text bg-white border-end-0">
+                    <i class="bi bi-wallet2 text-muted"></i>
+                  </span>
+                  <input
+                    type="text"
+                    formControlName="accountId"
+                    class="form-control border-start-0 ps-0"
+                    placeholder="Entrez l'ID du compte..."
+                    style="box-shadow: none;"
+                  />
+                  <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-search me-2"></i>Rechercher
+                  </button>
+                </div>
+              </form>
+            </div>
 
-            <div *ngIf="accountFormGroup.get('accountId')?.value" class="text-end">
-              <div class="badge bg-light text-dark border px-3 py-2">
-                <span class="text-uppercase text-muted small">Active Account</span><br />
-                <code class="fw-bold">{{ accountFormGroup.get('accountId')?.value }}</code>
+            <div *ngIf="accountFormGroup.get('accountId')?.value" class="col-md-5">
+              <div class="alert alert-info mb-0 d-flex align-items-center justify-content-center h-100">
+                <div class="text-center">
+                  <small class="text-uppercase d-block mb-1 opacity-75">Compte Actif</small>
+                  <strong class="fs-6">{{ accountFormGroup.get('accountId')?.value }}</strong>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Détails du compte ou message d'erreur/chargement -->
+          <!-- Account Details -->
           <ng-container *ngIf="accountObservable | async as accountDetails; else loadingOrError">
-            <!-- Informations du compte -->
-            <div class="mb-3">
-              <span class="fw-semibold">Balance:</span>
-              <span
-                [ngClass]="{
-                'text-success fw-bold':accountDetails.balance>=0,
-                'text-danger fw-bold':accountDetails.balance<0
-              }"
-              >{{ accountDetails.balance | number:'1.2-2' }} MAD</span
-              >
-            </div>
 
-            <div class="mb-3 d-flex align-items-center gap-2">
-              <span class="fw-semibold mb-0">Status:</span>
-              <span
-                class="badge px-3 py-2 rounded-pill text-white shadow-sm"
-                [ngClass]="{
-                      'bg-success': accountDetails.status === 'ACTIVE',
-                      'bg-warning text-dark': accountDetails.status === 'PENDING',
-                      'bg-danger': accountDetails.status === 'BLOCKED' || accountDetails.status === 'CLOSED',
-                      'bg-secondary': accountDetails.status === 'INACTIVE'
-                    }"
-              >
-                <i class="bi bi-shield-lock me-1"></i>
-                {{ accountDetails.status }}
-              </span>
-            </div>
+            <!-- Account Overview Cards -->
+            <div class="row g-3 mb-4">
+              <div class="col-md-4">
+                <div class="card border-0 h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                  <div class="card-body text-white text-center py-4">
+                    <i class="bi bi-currency-exchange fs-1 mb-2 opacity-75"></i>
+                    <div class="small text-uppercase opacity-75 mb-1">Solde</div>
+                    <h3 class="mb-0 fw-bold">{{ accountDetails.balance | number:'1.2-2' }}</h3>
+                    <div class="small mt-1">MAD</div>
+                  </div>
+                </div>
+              </div>
 
-            <div class="mb-2">
-              <strong>Type: </strong>
-              <span
-                class="badge"
-                [ngClass]="{
-                'bg-info': accountDetails.type === 'Current',
-                'bg-warning text-dark': accountDetails.type === 'Saving'
-              }"
-              >
-                {{ accountDetails.type}}
-              </span>
-            </div>
+              <div class="col-md-4">
+                <div class="card border-0 h-100" [ngStyle]="{
+                  'background': accountDetails.status === 'ACTIVE' ? 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' :
+                                accountDetails.status === 'BLOCKED' ? 'linear-gradient(135deg, #eb3349 0%, #f45c43 100%)' :
+                                'linear-gradient(135deg, #bdc3c7 0%, #95a5a6 100%)'
+                }">
+                  <div class="card-body text-white text-center py-4">
+                    <i class="bi bi-shield-check fs-1 mb-2 opacity-75"></i>
+                    <div class="small text-uppercase opacity-75 mb-1">Statut</div>
+                    <h5 class="mb-0 fw-bold">{{ accountDetails.status }}</h5>
+                  </div>
+                </div>
+              </div>
 
-            <div *ngIf="accountDetails.type === 'Saving'" class="mb-3">
-              <label class="form-label">Interest Rate (%)</label>
-              <div class="input-group">
-                <input
-                  type="number"
-                  [(ngModel)]="newInterestRate"
-                  class="form-control"
-                  min="0"
-                  step="0.1"
-                />
-                <button
-                  class="btn btn-outline-success"
-                  (click)="updateInterestRate()"
-                >
-                  <i class="bi bi-arrow-repeat"></i> Update
-                </button>
+              <div class="col-md-4">
+                <div class="card border-0 h-100" [ngStyle]="{
+                  'background': accountDetails.type === 'Saving' ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' :
+                                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+                }">
+                  <div class="card-body text-white text-center py-4">
+                    <i class="bi bi-bank fs-1 mb-2 opacity-75"></i>
+                    <div class="small text-uppercase opacity-75 mb-1">Type</div>
+                    <h5 class="mb-0 fw-bold">{{ accountDetails.type }}</h5>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div *ngIf="accountDetails.type === 'Current'" class="mb-3">
-              <label class="form-label">Overdraft Limit (MAD)</label>
-              <div class="input-group">
-                <input
-                  type="number"
-                  [(ngModel)]="newOverdraftLimit"
-                  class="form-control"
-                  min="0"
-                  step="100"
-                />
-                <button
-                  class="btn btn-outline-success"
-                  (click)="updateOverdraftLimit()">
-                  <i class="bi bi-arrow-repeat"></i> Update
-                </button>
+            <!-- Account Configuration -->
+            <div class="mb-4">
+              <div *ngIf="accountDetails.type === 'Saving'" class="card border-0 bg-light">
+                <div class="card-body">
+                  <label class="form-label fw-semibold mb-3">
+                    <i class="bi bi-percent me-2 text-primary"></i>Taux d'Intérêt (%)
+                  </label>
+                  <div class="input-group input-group-lg">
+                    <input
+                      type="number"
+                      [(ngModel)]="newInterestRate"
+                      class="form-control"
+                      min="0"
+                      step="0.1"
+                    />
+                    <button class="btn btn-success px-4" (click)="updateInterestRate()">
+                      <i class="bi bi-check-circle me-2"></i>Mettre à jour
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="accountDetails.type === 'Current'" class="card border-0 bg-light">
+                <div class="card-body">
+                  <label class="form-label fw-semibold mb-3">
+                    <i class="bi bi-arrow-down-circle me-2 text-warning"></i>Limite de Découvert (MAD)
+                  </label>
+                  <div class="input-group input-group-lg">
+                    <input
+                      type="number"
+                      [(ngModel)]="newOverdraftLimit"
+                      class="form-control"
+                      min="0"
+                      step="100"
+                    />
+                    <button class="btn btn-success px-4" (click)="updateOverdraftLimit()">
+                      <i class="bi bi-check-circle me-2"></i>Mettre à jour
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <form
-              [formGroup]="filterFormGroup"
-              (ngSubmit)="searchOperations()"
-              class="mb-3"
-            >
-              <div class="row g-2">
-                <div class="col-md-3">
-                  <label for="startDate" class="form-label small">Date début</label>
-                  <input
-                    type="date"
-                    id="startDate"
-                    formControlName="startDate"
-                    class="form-control form-control-sm"
-                  />
-                </div>
+            <!-- Filters Section -->
+            <div class="card border-0 bg-light mb-4">
+              <div class="card-body">
+                <h6 class="fw-bold mb-3">
+                  <i class="bi bi-funnel me-2 text-primary"></i>Filtres de Recherche
+                </h6>
+                <form [formGroup]="filterFormGroup" (ngSubmit)="searchOperations()">
+                  <div class="row g-3">
+                    <div class="col-md-3">
+                      <label class="form-label small text-muted">Date Début</label>
+                      <input type="date" formControlName="startDate" class="form-control" />
+                    </div>
 
-                <div class="col-md-3">
-                  <label for="endDate" class="form-label small">Date fin</label>
-                  <input
-                    type="date"
-                    id="endDate"
-                    formControlName="endDate"
-                    class="form-control form-control-sm"
-                  />
-                </div>
+                    <div class="col-md-3">
+                      <label class="form-label small text-muted">Date Fin</label>
+                      <input type="date" formControlName="endDate" class="form-control" />
+                    </div>
 
-                <div class="col-md-2">
-                  <label for="minAmount" class="form-label small">Min (MAD)</label>
-                  <input
-                    type="number"
-                    id="minAmount"
-                    formControlName="minAmount"
-                    class="form-control form-control-sm"
-                    placeholder="0"
-                    step="0.01"
-                  />
-                </div>
+                    <div class="col-md-2">
+                      <label class="form-label small text-muted">Min (MAD)</label>
+                      <input type="number" formControlName="minAmount" class="form-control" placeholder="0" />
+                    </div>
 
-                <div class="col-md-2">
-                  <label for="maxAmount" class="form-label small">Max (MAD)</label>
-                  <input
-                    type="number"
-                    id="maxAmount"
-                    formControlName="maxAmount"
-                    class="form-control form-control-sm"
-                    placeholder="100000"
-                    step="0.01"
-                  />
-                </div>
+                    <div class="col-md-2">
+                      <label class="form-label small text-muted">Max (MAD)</label>
+                      <input type="number" formControlName="maxAmount" class="form-control" placeholder="100000" />
+                    </div>
 
-                <div class="col-md-2 d-flex align-items-end gap-1">
+                    <div class="col-md-2 d-flex align-items-end gap-2">
+                      <button type="submit" class="btn btn-primary flex-fill">
+                        <i class="bi bi-search"></i>
+                      </button>
+                      <button type="button" class="btn btn-secondary" (click)="clearFilters()">
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div *ngIf="hasActiveFilters()" class="mt-3">
+                    <span class="badge bg-primary px-3 py-2">
+                      <i class="bi bi-funnel-fill me-1"></i>Filtres Actifs
+                    </span>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- Operations Table -->
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-white border-bottom py-3">
+                <h6 class="mb-0 fw-bold">
+                  <i class="bi bi-list-ul me-2 text-primary"></i>Historique des Opérations
+                </h6>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                    <tr>
+                      <th class="py-3">ID</th>
+                      <th class="py-3">Date & Heure</th>
+                      <th class="text-end py-3">Montant</th>
+                      <th class="text-center py-3">Type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let op of accountDetails.accountOperationDTOS">
+                      <td class="align-middle">
+                        <span class="badge bg-light text-dark">{{ op.id }}</span>
+                      </td>
+                      <td class="align-middle">
+                        <i class="bi bi-calendar3 me-2 text-muted"></i>
+                        {{ op.operationDate | date: 'dd/MM/yyyy HH:mm' }}
+                      </td>
+                      <td class="text-end align-middle fw-bold">
+                        {{ op.amount | number: '1.2-2' }} MAD
+                      </td>
+                      <td class="text-center align-middle">
+                          <span class="badge px-3 py-2" [ngClass]="op.type === 'CREDIT' ? 'bg-success' : 'bg-danger'">
+                            <i class="bi" [ngClass]="op.type === 'CREDIT' ? 'bi-arrow-down-circle' : 'bi-arrow-up-circle'"></i>
+                            {{ op.type }}
+                          </span>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Pagination -->
+              <div class="card-footer bg-white border-top py-3">
+                <nav class="d-flex justify-content-center flex-wrap gap-2">
                   <button
-                    type="submit"
-                    class="btn btn-primary btn-sm flex-fill"
-                    title="Rechercher"
-                  >
-                    <i class="bi bi-search"></i>
+                    *ngFor="let _ of [].constructor(accountDetails.totalPages); let page=index"
+                    class="btn btn-sm px-4"
+                    [ngClass]="page === currentPage ? 'btn-primary' : 'btn-outline-primary'"
+                    (click)="gotoPage(page)">
+                    {{ page + 1 }}
                   </button>
-                  <button
-                    type="button"
-                    class="btn btn-secondary btn-sm"
-                    (click)="clearFilters()"
-                    title="Réinitialiser"
-                  >
-                    <i class="bi bi-x-circle"></i>
-                  </button>
-                </div>
+                </nav>
               </div>
-
-              <!-- Indicateur de filtres actifs -->
-              <div *ngIf="hasActiveFilters()" class="mt-2">
-                <span class="badge bg-info">
-                  <i class="bi bi-funnel-fill me-1"></i>
-                      Filtres actifs
-                </span>
-              </div>
-            </form>
-
-
-            <!-- Table des opérations -->
-            <div class="table-responsive">
-              <table class="table table-hover table-sm align-middle">
-                <thead class="table-light">
-                <tr>
-                  <th>ID</th>
-                  <th>Date</th>
-                  <th class="text-end">Amount</th>
-                  <th class="text-center">Type</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let op of accountDetails.accountOperationDTOS">
-                  <td>{{ op.id }}</td>
-                  <td>
-                    {{ op.operationDate | date: 'dd-MM-yyyy HH:mm:ss' }}
-                  </td>
-                  <td class="text-end">{{ op.amount | number: '1.2-2' }}</td>
-                  <td class="text-center">
-                      <span
-                        class="badge"
-                        [ngClass]="op.type === 'CREDIT' ? 'bg-success' : 'bg-danger'"
-                      >
-                        {{ op.type }}
-                      </span>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
             </div>
 
-            <!-- Pagination -->
-            <nav class="d-flex flex-wrap">
-              <a *ngFor="let _ of [].constructor(accountDetails.totalPages); let page=index"
-                 class="btn me-2 mb-2"
-                 [ngClass]="page === currentPage ? 'btn-info' : 'btn-outline-info'"
-                 (click)="gotoPage(page)">
-                {{ page }}
-              </a>
-            </nav>
           </ng-container>
 
-          <!-- Template pour chargement ou erreur -->
+          <!-- Loading/Error Template -->
           <ng-template #loadingOrError>
-            <div *ngIf="errorMessage" class="alert alert-danger">
-              {{ errorMessage }}
+            <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center">
+              <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+              <div>{{ errorMessage }}</div>
             </div>
-            <div *ngIf="!errorMessage" class="text-muted">Chargement...</div>
+            <div *ngIf="!errorMessage" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+              </div>
+              <p class="text-muted mt-3">Chargement des données...</p>
+            </div>
           </ng-template>
         </div>
       </div>
     </div>
 
-    <!-- Right Column: Operation Form -->
-    <div class="col-md-6">
-      <div *ngIf="accountObservable" class="card shadow-sm">
-        <div class="card-header bg-success text-white">
-          <i class="bi bi-gear me-2"></i> Opérations sur le Compte
+    <!-- Right Column: Operations -->
+    <div class="col-lg-5">
+      <div *ngIf="accountObservable" class="card border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header border-0 py-4" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+          <h5 class="text-white mb-0 d-flex align-items-center">
+            <i class="bi bi-gear-fill me-3 fs-4"></i>
+            <span class="fw-bold">Opérations Bancaires</span>
+          </h5>
         </div>
-        <div class="card-body" *ngIf="authService.roles.includes('ADMIN')">
-          <div *ngIf="authService.roles.includes('ADMIN')" class="mb-4">
-            <label class="form-label fw-semibold">Change Account Status</label>
-            <div class="input-group">
-              <select
-                class="form-select"
-                [(ngModel)]="selectedStatus"
-                [ngModelOptions]="{ standalone: true }"
-              >
-                <option *ngFor="let status of statuses" [value]="status">
-                  {{ status }}
-                </option>
-              </select>
-              <button
-                class="btn btn-outline-success fw-semibold"
-                type="button"
-                (click)="updateStatus()"
-              >
-                <i class="bi bi-shield-check me-1"></i>Update
-              </button>
+        <div class="card-body p-4" *ngIf="authService.roles.includes('ADMIN')">
+
+          <!-- Status Management (Admin Only) -->
+          <div *ngIf="authService.roles.includes('ADMIN')" class="card border-0 bg-light mb-4">
+            <div class="card-body">
+              <label class="form-label fw-semibold mb-3">
+                <i class="bi bi-shield-lock me-2 text-warning"></i>Changer le Statut du Compte
+              </label>
+              <div class="input-group input-group-lg">
+                <select class="form-select" [(ngModel)]="selectedStatus" [ngModelOptions]="{ standalone: true }">
+                  <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+                </select>
+                <button class="btn btn-warning text-white px-4" type="button" (click)="updateStatus()">
+                  <i class="bi bi-arrow-repeat me-2"></i>Modifier
+                </button>
+              </div>
             </div>
           </div>
+
+          <!-- Operation Form -->
           <form [formGroup]="opertaionFromGroup" (ngSubmit)="handleAccountOperation()">
-            <!-- Type d'opération -->
-            <div class="mb-3">
-              <label class="form-label">Type d'opération</label>
-              <div class="form-check form-check-inline" *ngFor="let type of ['DEBIT', 'CREDIT', 'TRANSFER']">
-                <input class="form-check-input" type="radio" formControlName="operationType" [value]="type">
-                <label class="form-check-label">{{ type }}</label>
+
+            <!-- Operation Type Selection -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold mb-3">
+                <i class="bi bi-cursor me-2 text-primary"></i>Type d'Opération
+              </label>
+              <div class="btn-group w-100" role="group">
+                <button
+                  *ngFor="let type of ['DEBIT','CREDIT','TRANSFER']"
+                  type="button"
+                  class="btn btn-lg"
+                  [ngClass]="opertaionFromGroup.get('operationType')?.value === type ? 'btn-primary' : 'btn-outline-primary'"
+                  (click)="opertaionFromGroup.get('operationType')?.setValue(type)">
+                  <i class="bi me-2" [ngClass]="{
+                    'bi-arrow-up-circle': type === 'DEBIT',
+                    'bi-arrow-down-circle': type === 'CREDIT',
+                    'bi-arrow-left-right': type === 'TRANSFER'
+                  }"></i>
+                  {{ type }}
+                </button>
               </div>
             </div>
 
-            <!-- Compte destinataire (uniquement pour TRANSFER) -->
-            <div *ngIf="opertaionFromGroup.get('operationType')?.value === 'TRANSFER'" class="mb-3">
-              <label class="form-label fw-semibold">Compte destinataire</label>
-
-              <select class="form-select shadow-sm rounded-3" formControlName="accountDestination">
-                <option value="" disabled selected>-- Choisir un bénéficiaire --</option>
-
+            <!-- Destination Account (Transfer Only) -->
+            <div *ngIf="opertaionFromGroup.get('operationType')?.value === 'TRANSFER'" class="mb-4">
+              <label class="form-label fw-semibold mb-3">
+                <i class="bi bi-person-check me-2 text-success"></i>Compte Bénéficiaire
+              </label>
+              <select class="form-select form-select-lg" formControlName="accountDestination">
+                <option value="" disabled selected>-- Sélectionner un bénéficiaire --</option>
                 <option *ngFor="let acc of beneficiaries" [value]="acc.compteDestinataire">
                   💳 {{ acc.nom | titlecase }} — {{ acc.compteDestinataire }}
                 </option>
               </select>
             </div>
 
-
-
-
-
-
-            <!-- Montant -->
-            <div class="mb-3">
-              <label class="form-label">Montant</label>
-              <input type="number" class="form-control" formControlName="amount">
+            <!-- Amount -->
+            <div class="mb-4">
+              <label class="form-label fw-semibold mb-3">
+                <i class="bi bi-cash-stack me-2 text-success"></i>Montant (MAD)
+              </label>
+              <input type="number" class="form-control form-control-lg" formControlName="amount" placeholder="0.00">
             </div>
 
             <!-- Description -->
-            <div class="mb-3">
-              <label class="form-label">Description</label>
-              <input type="text" class="form-control" formControlName="description">
+            <div class="mb-4">
+              <label class="form-label fw-semibold mb-3">
+                <i class="bi bi-chat-left-text me-2 text-info"></i>Description
+              </label>
+              <input type="text" class="form-control form-control-lg" formControlName="description" placeholder="Motif de l'opération...">
             </div>
 
-            <!-- Bouton de validation -->
-            <button class="btn btn-success w-100" type="submit">
-              <i class="bi bi-check-circle me-2"></i> Valider l'opération
+            <!-- Submit Button -->
+            <button class="btn btn-success btn-lg w-100 py-3 fw-bold" type="submit">
+              <i class="bi bi-check-circle-fill me-2"></i>Valider l'Opération
             </button>
           </form>
-          <div *ngIf="opertaionFromGroup.get('operationType')?.value === 'TRANSFER'" class="mb-3">
-            <button class="btn w-100 mt-3"
-                    style="border: 2px solid #198754; color: #198754; background-color: white;"
-                    (click)="openAddBeneficiary()">
-              <i class="bi bi-person-plus me-2"></i> AJOUTER UN BÉNÉFICIAIRE
+
+          <!-- Beneficiary Management (Transfer Only) -->
+          <div *ngIf="opertaionFromGroup.get('operationType')?.value === 'TRANSFER'" class="mt-4">
+            <button class="btn btn-outline-success btn-lg w-100 mb-3 py-3" (click)="openAddBeneficiary()">
+              <i class="bi bi-person-plus-fill me-2"></i>Ajouter un Bénéficiaire
             </button>
 
-
-            <!-- Bouton : GÉRER MES BÉNÉFICIAIRES -->
-            <button class="btn w-100 mt-3"
-                    style="border: 2px solid #198754; color: #198754; background-color: white;"
-                    (click)="openManageBeneficiary()">
-              <i class="bi bi-gear me-2"></i> GÉRER MES BÉNÉFICIAIRES
+            <button class="btn btn-outline-primary btn-lg w-100 py-3" (click)="openManageBeneficiary()">
+              <i class="bi bi-people-fill me-2"></i>Gérer Mes Bénéficiaires
             </button>
-
           </div>
         </div>
       </div>
-      <div class="modal fade show"
-           tabindex="-1"
-           *ngIf="showAddBeneficiaryModal"
-           style="display:block; background: rgba(0,0,0,0.5)">
-        <div class="modal-dialog">
-          <div class="modal-content shadow-lg">
 
-            <div class="modal-header bg-success text-white">
-              <h5 class="modal-title">Ajouter un bénéficiaire</h5>
-              <button type="button" class="btn-close" (click)="closeAddBeneficiary()"></button>
+      <!-- Add Beneficiary Modal -->
+      <div class="modal fade show" tabindex="-1" *ngIf="showAddBeneficiaryModal" style="display:block; background: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 py-4" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+              <h5 class="modal-title text-white fw-bold">
+                <i class="bi bi-person-plus-fill me-2"></i>Ajouter un Bénéficiaire
+              </h5>
+              <button type="button" class="btn-close btn-close-white" (click)="closeAddBeneficiary()"></button>
             </div>
 
             <form [formGroup]="beneficiaryForm" (ngSubmit)="saveBeneficiary()">
-              <div class="modal-body">
-
-                <div class="mb-3">
-                  <label class="form-label">Nom complet *</label>
-                  <input type="text" class="form-control" formControlName="nom">
+              <div class="modal-body p-4">
+                <div class="mb-4">
+                  <label class="form-label fw-semibold">Nom Complet *</label>
+                  <input type="text" class="form-control form-control-lg" formControlName="nom" placeholder="Ex: Mohammed Alami">
                 </div>
 
-                <div class="mb-3">
-                  <label class="form-label">Compte bénéficiaire *</label>
-                  <input type="text" class="form-control" formControlName="compteDestinataire">
+                <div class="mb-4">
+                  <label class="form-label fw-semibold">Numéro de Compte *</label>
+                  <input type="text" class="form-control form-control-lg" formControlName="compteDestinataire" placeholder="Ex: 123456789">
                 </div>
-
               </div>
 
-              <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" (click)="closeAddBeneficiary()">Annuler</button>
-                <button class="btn btn-success" type="submit">
-                  <i class="bi bi-check-circle me-2"></i> Ajouter
+              <div class="modal-footer border-0 p-4">
+                <button class="btn btn-secondary btn-lg px-4" type="button" (click)="closeAddBeneficiary()">Annuler</button>
+                <button class="btn btn-success btn-lg px-4" type="submit">
+                  <i class="bi bi-check-circle me-2"></i>Ajouter
                 </button>
               </div>
             </form>
@@ -374,60 +388,60 @@
         </div>
       </div>
 
-      <!-- Modal : Gérer mes bénéficiaires -->
-      <div class="modal fade show"
-           tabindex="-1"
-           *ngIf="showManageBeneficiaryModal"
-           style="display:block; background: rgba(0,0,0,0.5)">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content shadow-lg">
-
-            <div class="modal-header bg-success text-white">
-              <h5 class="modal-title">Gérer mes bénéficiaires</h5>
-              <button type="button" class="btn-close" (click)="closeManageBeneficiary()"></button>
+      <!-- Manage Beneficiaries Modal -->
+      <div class="modal fade show" tabindex="-1" *ngIf="showManageBeneficiaryModal" style="display:block; background: rgba(0,0,0,0.6);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+              <h5 class="modal-title text-white fw-bold">
+                <i class="bi bi-people-fill me-2"></i>Gérer Mes Bénéficiaires
+              </h5>
+              <button type="button" class="btn-close btn-close-white" (click)="closeManageBeneficiary()"></button>
             </div>
 
-            <div class="modal-body">
-              <table class="table table-hover table-bordered">
-                <thead class="table-light">
-                <tr>
-                  <th>Nom</th>
-                  <th>Compte destinataire</th>
-                  <th class="text-center">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let b of beneficiaries; let i = index">
-                  <td>
-                    <span class="form-control form-control-sm bg-light">{{ b.id }}</span>
-                  </td>
-                  <td>
-                    <input type="text" class="form-control form-control-sm"
-                           [(ngModel)]="b.nom" />
-                  </td>
-                  <td>
-                    <input type="text" class="form-control form-control-sm"
-                           [(ngModel)]="b.compteDestinataire" />
-                  </td>
-                  <td class="text-center">
-                    <button class="btn btn-sm btn-primary me-2" (click)="updateBeneficiary(i)">
-                      <i class="bi bi-pencil"></i> Sauvegarder
-                    </button>
-                    <button class="btn btn-sm btn-danger" (click)="removeBeneficiary(i)">
-                      <i class="bi bi-trash"></i> Supprimer
-                    </button>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+            <div class="modal-body p-4">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead class="table-light">
+                  <tr>
+                    <th class="py-3">ID</th>
+                    <th class="py-3">Nom</th>
+                    <th class="py-3">Compte</th>
+                    <th class="text-center py-3">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let b of beneficiaries; let i = index">
+                    <td class="align-middle">
+                      <span class="badge bg-light text-dark px-3 py-2">{{ b.id }}</span>
+                    </td>
+                    <td class="align-middle">
+                      <input type="text" class="form-control" [(ngModel)]="b.nom" />
+                    </td>
+                    <td class="align-middle">
+                      <input type="text" class="form-control" [(ngModel)]="b.compteDestinataire" />
+                    </td>
+                    <td class="text-center align-middle">
+                      <button class="btn btn-sm btn-primary me-2" (click)="updateBeneficiary(i)">
+                        <i class="bi bi-save"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" (click)="removeBeneficiary(i)">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
 
-              <div *ngIf="beneficiaries.length === 0" class="text-muted text-center">
-                Aucun bénéficiaire trouvé.
+              <div *ngIf="beneficiaries.length === 0" class="text-center py-5 text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                <p>Aucun bénéficiaire trouvé.</p>
               </div>
             </div>
 
-            <div class="modal-footer">
-              <button class="btn btn-secondary" (click)="closeManageBeneficiary()">Fermer</button>
+            <div class="modal-footer border-0 p-4">
+              <button class="btn btn-secondary btn-lg px-4" (click)="closeManageBeneficiary()">Fermer</button>
             </div>
           </div>
         </div>

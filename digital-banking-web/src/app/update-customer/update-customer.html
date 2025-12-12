@@ -1,30 +1,105 @@
-<div class="container">
-  <div class="card col-md-6 offset-3 mt-2">
-    <div class="card-header">Update Customer</div>
-    <div class="card-body">
-      <form [formGroup]="updateCustomerFormGroup" (ngSubmit)="handleUpdateCustomer()">
-        <div class="mb-3">
-          <label class="form-label">Name :</label>
-          <input type="text" formControlName="name" class="form-control">
-          <span class="text-danger"
-                *ngIf="updateCustomerFormGroup.get('name')?.touched
-                && updateCustomerFormGroup.get('name')?.errors
-                && updateCustomerFormGroup.get('name')?.errors?.['required']">
-            Name is required
-          </span>
+<div class="min-vh-100 d-flex align-items-center justify-content-center py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6">
+        <div class="card border-0 shadow-lg" style="border-radius: 20px; backdrop-filter: blur(10px);">
+          <div class="card-body p-4 p-md-5">
+            <!-- Header Section -->
+            <div class="text-center mb-4">
+              <div class="d-inline-flex align-items-center justify-content-center mb-3"
+                   style="width: 70px; height: 70px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 16 16">
+                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                </svg>
+              </div>
+              <h2 class="fw-bold mb-2" style="color: #2d3748;">Update Customer</h2>
+              <p class="text-muted mb-0">Modify customer information</p>
+            </div>
+
+            <!-- Form -->
+            <form [formGroup]="updateCustomerFormGroup" (ngSubmit)="handleUpdateCustomer()">
+              <!-- Name Field -->
+              <div class="mb-4">
+                <label class="form-label fw-semibold mb-2" style="color: #4a5568; font-size: 0.95rem;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
+                  </svg>
+                  Full Name
+                </label>
+                <input type="text"
+                       formControlName="name"
+                       class="form-control form-control-lg"
+                       placeholder="Enter customer name"
+                       style="border-radius: 12px; border: 2px solid #e2e8f0; padding: 12px 18px; transition: all 0.3s ease;"
+                       [style.border-color]="updateCustomerFormGroup.get('name')?.touched && updateCustomerFormGroup.get('name')?.errors ? '#ef4444' : '#e2e8f0'"
+                       onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 0 4px rgba(102, 126, 234, 0.1)'"
+                       onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
+                <div class="mt-2" style="min-height: 24px;">
+                  <span class="d-flex align-items-center"
+                        style="color: #ef4444; font-size: 0.875rem;"
+                        *ngIf="updateCustomerFormGroup.get('name')?.touched && updateCustomerFormGroup.get('name')?.errors?.['required']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                      <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                    </svg>
+                    Name is required
+                  </span>
+                </div>
+              </div>
+
+              <!-- Email Field -->
+              <div class="mb-4">
+                <label class="form-label fw-semibold mb-2" style="color: #4a5568; font-size: 0.95rem;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                  </svg>
+                  Email Address
+                </label>
+                <input type="email"
+                       formControlName="email"
+                       class="form-control form-control-lg"
+                       placeholder="customer@example.com"
+                       style="border-radius: 12px; border: 2px solid #e2e8f0; padding: 12px 18px; transition: all 0.3s ease;"
+                       [style.border-color]="updateCustomerFormGroup.get('email')?.touched && updateCustomerFormGroup.get('email')?.errors ? '#ef4444' : '#e2e8f0'"
+                       onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 0 4px rgba(102, 126, 234, 0.1)'"
+                       onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
+                <div class="mt-2" style="min-height: 24px;">
+                  <span class="d-flex align-items-center"
+                        style="color: #ef4444; font-size: 0.875rem;"
+                        *ngIf="updateCustomerFormGroup.get('email')?.touched && updateCustomerFormGroup.get('email')?.errors?.['required']">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                      <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                    </svg>
+                    Email is not valid
+                  </span>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                [disabled]="!updateCustomerFormGroup.valid"
+                class="btn btn-lg w-100 text-white fw-semibold position-relative overflow-hidden"
+                style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 12px; padding: 14px; font-size: 1rem; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
+                [style.opacity]="!updateCustomerFormGroup.valid ? '0.6' : '1'"
+                [style.cursor]="!updateCustomerFormGroup.valid ? 'not-allowed' : 'pointer'"
+                onmouseover="if(!this.disabled) { this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.5)'; }"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.4)';">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                </svg>
+                Update Customer
+              </button>
+
+              <!-- Additional Info -->
+              <div class="text-center mt-3">
+                <small class="text-muted">All fields are required to update the customer</small>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Email :</label>
-          <input type="text" formControlName="email" class="form-control">
-          <span class="text-danger"
-                *ngIf="updateCustomerFormGroup.get('email')?.touched
-                && updateCustomerFormGroup.get('email')?.errors
-                && updateCustomerFormGroup.get('email')?.errors?.['required']">
-            Email is not valid
-          </span>
-        </div>
-        <button [disabled]="!updateCustomerFormGroup.valid" class="btn btn-info">Update</button>
-      </form>
+      </div>
     </div>
   </div>
 </div>

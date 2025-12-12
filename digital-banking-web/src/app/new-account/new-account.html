@@ -1,50 +1,251 @@
-<div class="container mt-4">
-  <div class="card shadow">
-    <div class="card-header bg-primary text-white">
-      <i class="bi bi-piggy-bank me-2"></i>Create New Account for {{
-        customerName }}
-    </div>
-    <div class="card-body">
-      <form [formGroup]="form" (ngSubmit)="handleCreateAccount()">
-        <div class="mb-3">
-          <label class="form-label">Account Type</label>
-          <select class="form-select" formControlName="type">
-            <option value="current">Current</option>
-            <option value="saving">Saving</option>
-          </select>
+<div class="min-vh-100 py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8">
+        <!-- Main Card -->
+        <div class="card border-0 shadow-lg" style="border-radius: 24px; overflow: hidden;">
+
+          <!-- Header Section -->
+          <div class="card-header border-0 text-white position-relative"
+               style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem;">
+            <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center justify-content-center me-3"
+                   style="width: 56px; height: 56px; background: rgba(255, 255, 255, 0.2); border-radius: 16px; backdrop-filter: blur(10px);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="mb-1 fw-bold">Create New Account</h3>
+                <p class="mb-0 opacity-75" style="font-size: 0.95rem;">for <span class="fw-semibold">{{ customerName }}</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body p-4 p-md-5">
+            <form [formGroup]="form" (ngSubmit)="handleCreateAccount()">
+
+              <!-- Account Type Selection -->
+              <div class="mb-4">
+                <label class="form-label fw-semibold mb-3" style="color: #4a5568; font-size: 0.95rem;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                    <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
+                  </svg>
+                  Account Type
+                </label>
+
+                <div class="row g-3">
+                  <div class="col-sm-6">
+                    <div class="form-check p-0">
+                      <input
+                        class="btn-check"
+                        type="radio"
+                        name="accountType"
+                        id="typeCurrent"
+                        value="current"
+                        [checked]="form.value.type === 'current'"
+                        (change)="form.patchValue({type: 'current'})">
+                      <label
+                        class="btn w-100 text-start p-4 position-relative"
+                        for="typeCurrent"
+                        style="border: 2px solid #e2e8f0; border-radius: 16px; transition: all 0.3s ease; cursor: pointer;"
+                        [style.border-color]="form.value.type === 'current' ? '#667eea' : '#e2e8f0'"
+                        [style.background]="form.value.type === 'current' ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)' : 'white'"
+                        onmouseover="if(this.style.borderColor !== 'rgb(102, 126, 234)') this.style.borderColor='#cbd5e1'"
+                        onmouseout="if(this.style.borderColor !== 'rgb(102, 126, 234)') this.style.borderColor='#e2e8f0'">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="d-flex align-items-center justify-content-center me-3"
+                               style="width: 44px; height: 44px; border-radius: 12px;"
+                               [style.background]="form.value.type === 'current' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#f1f5f9'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" [attr.fill]="form.value.type === 'current' ? 'white' : '#64748b'" viewBox="0 0 16 16">
+                              <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/>
+                            </svg>
+                          </div>
+                          <div>
+                            <div class="fw-bold mb-0" style="color: #2d3748; font-size: 1.05rem;">Current Account</div>
+                          </div>
+                        </div>
+                        <p class="text-muted mb-0" style="font-size: 0.875rem;">Day-to-day banking with overdraft protection</p>
+
+                        <!-- Checkmark -->
+                        <div class="position-absolute"
+                             style="top: 16px; right: 16px; width: 24px; height: 24px; border-radius: 50%; transition: all 0.3s ease;"
+                             [style.background]="form.value.type === 'current' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#f1f5f9'">
+                          <svg *ngIf="form.value.type === 'current'" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white" viewBox="0 0 16 16" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                          </svg>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-check p-0">
+                      <input
+                        class="btn-check"
+                        type="radio"
+                        name="accountType"
+                        id="typeSaving"
+                        value="saving"
+                        [checked]="form.value.type === 'saving'"
+                        (change)="form.patchValue({type: 'saving'})">
+                      <label
+                        class="btn w-100 text-start p-4 position-relative"
+                        for="typeSaving"
+                        style="border: 2px solid #e2e8f0; border-radius: 16px; transition: all 0.3s ease; cursor: pointer;"
+                        [style.border-color]="form.value.type === 'saving' ? '#667eea' : '#e2e8f0'"
+                        [style.background]="form.value.type === 'saving' ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)' : 'white'"
+                        onmouseover="if(this.style.borderColor !== 'rgb(102, 126, 234)') this.style.borderColor='#cbd5e1'"
+                        onmouseout="if(this.style.borderColor !== 'rgb(102, 126, 234)') this.style.borderColor='#e2e8f0'">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="d-flex align-items-center justify-content-center me-3"
+                               style="width: 44px; height: 44px; border-radius: 12px;"
+                               [style.background]="form.value.type === 'saving' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#f1f5f9'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" [attr.fill]="form.value.type === 'saving' ? 'white' : '#64748b'" viewBox="0 0 16 16">
+                              <path fill-rule="evenodd" d="M7.964 1.527c-2.977 0-5.571 1.704-6.32 4.125h-.55A1 1 0 0 0 .11 6.824l.254 1.46a1.5 1.5 0 0 0 1.478 1.243h.263c.3.513.688.978 1.145 1.382l-.729 2.477a.5.5 0 0 0 .48.641h2a.5.5 0 0 0 .471-.332l.482-1.351c.635.173 1.31.267 2.011.267.707 0 1.388-.095 2.028-.272l.543 1.372a.5.5 0 0 0 .465.316h2a.5.5 0 0 0 .478-.645l-.761-2.506C13.81 9.895 14.5 8.559 14.5 7.069c0-.145-.007-.29-.02-.431.261-.11.508-.266.705-.444.315.306.815.306.815-.417 0 .223-.5.223-.461-.026a.95.95 0 0 0 .09-.255.7.7 0 0 0-.202-.645.58.58 0 0 0-.707-.098.735.735 0 0 0-.375.562c-.024.243.082.48.32.654a2.112 2.112 0 0 1-.259.153c-.534-2.664-3.284-4.595-6.442-4.595zM2.516 6.26c.455-2.066 2.667-3.733 5.448-3.733 3.146 0 5.536 2.114 5.536 4.542 0 1.254-.624 2.41-1.67 3.248a.5.5 0 0 0-.165.535l.66 2.175h-.985l-.59-1.487a.5.5 0 0 0-.629-.288c-.661.23-1.39.359-2.157.359a6.558 6.558 0 0 1-2.157-.359.5.5 0 0 0-.635.304l-.525 1.471h-.979l.633-2.15a.5.5 0 0 0-.17-.534 4.649 4.649 0 0 1-1.284-1.541.5.5 0 0 0-.446-.275h-.56a.5.5 0 0 1-.492-.414l-.254-1.46h.933a.5.5 0 0 0 .488-.393zm12.621-.857a.565.565 0 0 1-.098.21.704.704 0 0 1-.044-.025c-.146-.09-.157-.175-.152-.223a.236.236 0 0 1 .117-.173c.049-.027.08-.021.113.012a.202.202 0 0 1 .064.199z"/>
+                            </svg>
+                          </div>
+                          <div>
+                            <div class="fw-bold mb-0" style="color: #2d3748; font-size: 1.05rem;">Saving Account</div>
+                          </div>
+                        </div>
+                        <p class="text-muted mb-0" style="font-size: 0.875rem;">Earn interest on your deposits</p>
+
+                        <!-- Checkmark -->
+                        <div class="position-absolute"
+                             style="top: 16px; right: 16px; width: 24px; height: 24px; border-radius: 50%; transition: all 0.3s ease;"
+                             [style.background]="form.value.type === 'saving' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#f1f5f9'">
+                          <svg *ngIf="form.value.type === 'saving'" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white" viewBox="0 0 16 16" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                          </svg>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Initial Balance -->
+              <div class="mb-4">
+                <label class="form-label fw-semibold mb-2" style="color: #4a5568; font-size: 0.95rem;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                    <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
+                  </svg>
+                  Initial Balance
+                </label>
+                <div class="position-relative">
+                  <span class="position-absolute" style="left: 18px; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 600; font-size: 1.1rem;">$</span>
+                  <input
+                    type="number"
+                    class="form-control form-control-lg"
+                    formControlName="initialBalance"
+                    placeholder="0.00"
+                    style="border-radius: 12px; border: 2px solid #e2e8f0; padding: 12px 18px 12px 38px; transition: all 0.3s ease; font-size: 1.1rem;"
+                    onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 0 4px rgba(102, 126, 234, 0.1)'"
+                    onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'" />
+                </div>
+              </div>
+
+              <!-- Overdraft (Current Account Only) -->
+              <div class="mb-4" *ngIf="form.value.type === 'current'"
+                   style="animation: fadeIn 0.3s ease-in;">
+                <label class="form-label fw-semibold mb-2" style="color: #4a5568; font-size: 0.95rem;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                  </svg>
+                  Overdraft Limit
+                </label>
+                <div class="position-relative">
+                  <span class="position-absolute" style="left: 18px; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 600; font-size: 1.1rem;">$</span>
+                  <input
+                    type="number"
+                    class="form-control form-control-lg"
+                    formControlName="overdraft"
+                    placeholder="0.00"
+                    style="border-radius: 12px; border: 2px solid #e2e8f0; padding: 12px 18px 12px 38px; transition: all 0.3s ease; font-size: 1.1rem;"
+                    onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 0 4px rgba(102, 126, 234, 0.1)'"
+                    onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'" />
+                </div>
+                <small class="text-muted d-block mt-2">Maximum amount you can overdraw</small>
+              </div>
+
+              <!-- Interest Rate (Saving Account Only) -->
+              <div class="mb-4" *ngIf="form.value.type === 'saving'"
+                   style="animation: fadeIn 0.3s ease-in;">
+                <label class="form-label fw-semibold mb-2" style="color: #4a5568; font-size: 0.95rem;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+                  </svg>
+                  Interest Rate
+                </label>
+                <div class="position-relative">
+                  <input
+                    type="number"
+                    class="form-control form-control-lg"
+                    formControlName="interestRate"
+                    placeholder="0.00"
+                    step="0.01"
+                    style="border-radius: 12px; border: 2px solid #e2e8f0; padding: 12px 48px 12px 18px; transition: all 0.3s ease; font-size: 1.1rem;"
+                    onfocus="this.style.borderColor='#667eea'; this.style.boxShadow='0 0 0 4px rgba(102, 126, 234, 0.1)'"
+                    onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'" />
+                  <span class="position-absolute" style="right: 18px; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 600; font-size: 1.1rem;">%</span>
+                </div>
+                <small class="text-muted d-block mt-2">Annual interest rate on your savings</small>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-grid gap-2 mt-5">
+                <button
+                  type="submit"
+                  class="btn btn-lg text-white fw-semibold"
+                  style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 12px; padding: 16px; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);"
+                  onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(16, 185, 129, 0.4)';"
+                  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(16, 185, 129, 0.3)';">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16" style="vertical-align: text-top;">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                  </svg>
+                  Create Account
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Initial Balance</label>
-          <input
-            type="number"
-            class="form-control"
-            formControlName="initialBalance"
-          />
+        <!-- Info Card -->
+        <div class="card border-0 shadow-sm mt-4" style="border-radius: 16px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-start">
+              <div class="me-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#667eea" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                </svg>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-2" style="color: #2d3748;">Account Information</h6>
+                <ul class="text-muted mb-0" style="font-size: 0.9rem; padding-left: 1.2rem;">
+                  <li class="mb-1"><strong>Current Account:</strong> Includes overdraft protection for emergency expenses</li>
+                  <li><strong>Saving Account:</strong> Earns compound interest on your balance annually</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div class="mb-3" *ngIf="form.value.type === 'current'">
-          <label class="form-label">Overdraft</label>
-          <input
-            type="number"
-            class="form-control"
-            formControlName="overdraft"
-          />
-        </div>
-
-        <div class="mb-3" *ngIf="form.value.type === 'saving'">
-          <label class="form-label">Interest Rate</label>
-          <input
-            type="number"
-            class="form-control"
-            formControlName="interestRate"
-          />
-        </div>
-
-        <button class="btn btn-success">
-          <i class="bi bi-check-circle me-1"></i>Create Account
-        </button>
-      </form>
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

@@ -1,70 +1,172 @@
-<div class="container d-flex justify-content-center align-items-center min-vh-100 bg-light">
-  <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
-    <div class="text-center mb-4">
-      <img [src]="'assets/logoDB.png'" alt="Digital Bank Logo" width="200" height="200" class="mb-2">
-      <h4 class="text-primary">Welcome to DigitalBank</h4>
-      <p class="text-muted small">Secure Login to your account</p>
+<div class="min-vh-100 d-flex align-items-center justify-content-center position-relative overflow-hidden"
+     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+
+  <!-- Animated Background Elements -->
+  <div class="position-absolute w-100 h-100" style="opacity: 0.1;">
+    <div class="position-absolute rounded-circle"
+         style="width: 300px; height: 300px; background: white; top: -100px; right: -100px; animation: float 6s ease-in-out infinite;"></div>
+    <div class="position-absolute rounded-circle"
+         style="width: 200px; height: 200px; background: white; bottom: -50px; left: -50px; animation: float 8s ease-in-out infinite 2s;"></div>
+    <div class="position-absolute rounded-circle"
+         style="width: 150px; height: 150px; background: white; top: 50%; left: 10%; animation: float 7s ease-in-out infinite 1s;"></div>
+  </div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+        <div class="card border-0 shadow-2xl rounded-4 overflow-hidden" style="backdrop-filter: blur(10px);">
+          <div class="row g-0">
+
+            <!-- Left Side - Branding -->
+            <div class="col-md-5 d-none d-md-flex flex-column justify-content-center align-items-center text-white p-5"
+                 style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);">
+              <div class="text-center">
+                <div class="mb-4 position-relative">
+                  <div class="position-absolute w-100 h-100 rounded-circle"
+                       style="background: rgba(255,255,255,0.2); filter: blur(20px); animation: pulse 3s ease-in-out infinite;"></div>
+                  <img [src]="'assets/logoDB.png'" alt="Digital Bank Logo" width="120" height="120" class="position-relative">
+                </div>
+                <h3 class="fw-bold mb-3" style="letter-spacing: -0.5px;">DigitalBank</h3>
+                <p class="mb-4 opacity-75">Votre partenaire financier de confiance</p>
+                <div class="d-flex flex-column gap-3 text-start">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-shield-check fs-4 me-3"></i>
+                    <div>
+                      <div class="fw-semibold">Sécurité maximale</div>
+                      <small class="opacity-75">Vos données sont protégées</small>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-lightning-charge fs-4 me-3"></i>
+                    <div>
+                      <div class="fw-semibold">Accès instantané</div>
+                      <small class="opacity-75">24/7 à votre service</small>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-graph-up fs-4 me-3"></i>
+                    <div>
+                      <div class="fw-semibold">Gestion intelligente</div>
+                      <small class="opacity-75">Optimisez vos finances</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side - Login Form -->
+            <div class="col-md-7 p-5">
+              <!-- Mobile Logo -->
+              <div class="text-center mb-4 d-md-none">
+                <img [src]="'assets/logoDB.png'" alt="Digital Bank Logo" width="80" height="80" class="mb-3">
+                <h4 class="text-primary fw-bold">DigitalBank</h4>
+              </div>
+
+              <div class="mb-4">
+                <h2 class="fw-bold mb-2" style="color: #2d3748;">Bienvenue !</h2>
+                <p class="text-muted">Connectez-vous à votre espace sécurisé</p>
+              </div>
+
+              <form [formGroup]="formLogin" (ngSubmit)="handleLogin()">
+
+                <!-- Username Field -->
+                <div class="mb-4">
+                  <label class="form-label fw-semibold text-dark">
+                    <i class="bi bi-person me-2 text-primary"></i>Nom d'utilisateur
+                  </label>
+                  <div class="position-relative">
+                    <input
+                      type="text"
+                      class="form-control form-control-lg border-2 ps-4"
+                      [class.is-invalid]="(formLogin.get('username')?.invalid && (formLogin.get('username')?.touched || formLogin.get('username')?.errors?.['unauthorized']))"
+                      formControlName="username"
+                      placeholder="Entrez votre identifiant"
+                      style="border-radius: 12px; padding-left: 1rem;">
+                    <i class="bi bi-person-circle position-absolute text-muted"
+                       style="top: 50%; right: 15px; transform: translateY(-50%);"></i>
+                  </div>
+                  <div *ngIf="formLogin.get('username')?.touched && formLogin.get('username')?.errors" class="mt-2">
+                    <small class="text-danger d-flex align-items-center">
+                      <i class="bi bi-exclamation-circle me-1"></i>
+                      <span *ngIf="formLogin.get('username')?.errors?.['required']">Le nom d'utilisateur est requis</span>
+                      <span *ngIf="formLogin.get('username')?.errors?.['minlength']">Minimum 4 caractères requis</span>
+                    </small>
+                  </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="mb-4">
+                  <label class="form-label fw-semibold text-dark">
+                    <i class="bi bi-lock me-2 text-primary"></i>Mot de passe
+                  </label>
+                  <div class="position-relative">
+                    <input
+                      type="password"
+                      class="form-control form-control-lg border-2 ps-4"
+                      [class.is-invalid]="(formLogin.get('password')?.invalid && formLogin.get('password')?.touched) || formLogin.get('password')?.errors?.['unauthorized']"
+                      formControlName="password"
+                      placeholder="Entrez votre mot de passe"
+                      style="border-radius: 12px; padding-left: 1rem;">
+                    <i class="bi bi-shield-lock position-absolute text-muted"
+                       style="top: 50%; right: 15px; transform: translateY(-50%);"></i>
+                  </div>
+                  <div *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.errors" class="mt-2">
+                    <small class="text-danger d-flex align-items-center">
+                      <i class="bi bi-exclamation-circle me-1"></i>
+                      <span *ngIf="formLogin.get('password')?.errors?.['required']">Le mot de passe est requis</span>
+                      <span *ngIf="formLogin.get('password')?.errors?.['minlength']">Minimum 6 caractères requis</span>
+                    </small>
+                  </div>
+                </div>
+
+                <!-- Error Message -->
+                <div *ngIf="formLogin.get('password')?.errors?.['unauthorized']" class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+                  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                  <div>Identifiants incorrects. Veuillez réessayer.</div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  class="btn btn-lg w-100 text-white fw-bold shadow-lg mb-3"
+                  [disabled]="formLogin.invalid"
+                  style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 12px; padding: 14px; transition: all 0.3s ease;">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Se Connecter
+                </button>
+
+                <!-- Divider -->
+                <div class="position-relative text-center my-4">
+                  <hr class="my-0">
+                  <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted small">ou</span>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="text-center">
+                  <p class="text-muted small mb-0">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Besoin d'aide ? Contactez le support
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <form [formGroup]="formLogin" (ngSubmit)="handleLogin()">
-      <!-- Username -->
-      <div class="mb-3">
-        <label class="form-label">Username</label>
-        <input type="text" class="form-control"
-               [class.is-invalid]="(formLogin.get('username')?.invalid && (formLogin.get('username')?.touched || formLogin.get('username')?.errors?.['unauthorized']))"
-               formControlName="username"
-               placeholder="Enter your username">
-        <div *ngIf="formLogin.get('username')?.touched && formLogin.get('username')?.errors" class="text-danger small">
-          <div *ngIf="formLogin.get('username')?.errors?.['required']">Username is required.</div>
-          <div *ngIf="formLogin.get('username')?.errors?.['minlength']">Username must be at least 4 characters.</div>
-        </div>
-      </div>
-
-      <!-- Password -->
-      <div class="mb-3">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-control"
-               [class.is-invalid]="(formLogin.get('password')?.invalid && formLogin.get('password')?.touched) || formLogin.get('password')?.errors?.['unauthorized']"
-               formControlName="password"
-               placeholder="Enter your password">
-        <div *ngIf="formLogin.get('password')?.touched && formLogin.get('password')?.errors" class="text-danger small">
-          <div *ngIf="formLogin.get('password')?.errors?.['required']">Password is required.</div>
-          <div *ngIf="formLogin.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</div>
-        </div>
-      </div>
-
-      <!-- Remember Me -->
-<!--      <div class="d-flex justify-content-between align-items-center mb-3">-->
-<!--        <div class="form-check">-->
-<!--          <input class="form-check-input" type="checkbox" id="rememberMe">-->
-<!--          <label class="form-check-label" for="rememberMe">Remember me</label>-->
-<!--        </div>-->
-<!--        <a href="/forgot-password" class="small text-decoration-none">Forgot password?</a>-->
-<!--      </div>-->
-
-      <!-- Submit -->
-      <button type="submit" class="btn btn-primary w-100" [disabled]="formLogin.invalid">Login</button>
-      <div *ngIf="formLogin.get('password')?.errors?.['unauthorized']" class="text-danger small">Login failed. Please check your credentials.</div>
-
-      <!-- Register -->
-<!--      <div class="text-center mt-3">-->
-<!--        <span class="text-muted small">Don’t have an account?</span>-->
-<!--        <a href="/register" class="small text-decoration-none">Create one</a>-->
-<!--      </div>-->
-    </form>
   </div>
 
   <!-- Toast Notification -->
-  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
     <div
       *ngIf="loginError"
-      class="toast show align-items-center text-bg-danger border-0"
+      class="toast show align-items-center border-0 shadow-lg"
       role="alert"
       aria-live="assertive"
       aria-atomic="true"
-    >
+      style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); border-radius: 12px;">
       <div class="d-flex">
-        <div class="toast-body">
+        <div class="toast-body text-white fw-semibold">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
           {{ loginError }}
         </div>
         <button type="button" class="btn-close btn-close-white me-2 m-auto" aria-label="Close" (click)="loginError = null"></button>
@@ -72,3 +174,72 @@
     </div>
   </div>
 </div>
+
+<style>
+  /* Floating animation for background circles */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(5deg);
+    }
+  }
+
+  /* Pulse animation for logo */
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.2;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.3;
+    }
+  }
+
+  /* Button hover effect */
+  button[type="submit"]:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+  }
+
+  button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  /* Input focus effects */
+  .form-control:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+  }
+
+  /* Card shadow */
+  .shadow-2xl {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  }
+
+  /* Toast animation */
+  .toast.show {
+    animation: slideInRight 0.3s ease;
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .card {
+      margin: 1rem;
+    }
+  }
+</style>
